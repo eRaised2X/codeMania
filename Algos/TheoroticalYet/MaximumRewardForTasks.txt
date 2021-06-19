@@ -1,0 +1,40 @@
+//Problem : Given a List of tasks T, where, each task has an ID, an expiry time and a rewardPrice(reward only when a task is completed before its expiry time),
+ arrange the tasks for John such that John can maximize the rewardPrice for himself by completing the tasks.
+Note that, it is assumed that each task takes 2 hour to complete and John has 8 working hours, (8 hours = 9am to 6pm, 1-2pm being lunch), so that means, John can take 4 tasks. Your task is to select the tasks in such
+a way that reward is maximum for John.
+// Example:
+TaskID | ExpiryHour   | Reward
+1           11 (11AM)    10
+2           13 (1PM)     5
+3           16 (4PM)     8
+4           13           15
+5           16           5
+6           18 (6PM)     10
+7           11           5
+8           16           12
+9           9 (9AM)      20
+10          19 (7pm)     10
+
+Then the output would be
+
+//Approach and Explanation
+1) Order the tasks list based on reward price in desc order.
+2) Then number the items based on the slot they belong to. (for example: 16, i.e., 4 pm is slot 3, 11AM is slot 1, anything less than 11AM is not considered, can't be finished as each task takes 2 hours, anything after 6pm is also slot4)
+3) Maintain a dict (or hashTable) with 4 keys (representing slot number), 1,2,3,4 and store the elements from step 2 for these keys, unless all the keys get a value. Also, if a key already has a value, assign the next incoming value
+ to the key previous (key with 1 lesser value).
+Example:
+
+Reward------ 20  15    12    10    10     10   10    8     5     5     5
+TaskID------ 9   4     8     1     6     6     10    3     2     5     7
+ExpiryHour-- 9   13   16     11    18    18    19    16    13    16    11
+
+Slots------ NA   2    3      1     4     4     4     3     2     3     1
+
+Dict
+key   ID
+1 -> 1
+2 -> 4
+3 -> 8
+4 -> 6
+
+so answer is 1,4,8,6 (IDs are taks to be picked up, and in the order).
